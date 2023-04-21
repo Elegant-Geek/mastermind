@@ -130,6 +130,8 @@ class Game
     end
     #^^ bigger loop end
     puts "GAME OVER."
+    # the end game will give the option to relaunch another round and clear the board, and toggle gameover back to false.
+    replay()
   end
   # ^ gameturn end
 
@@ -137,7 +139,7 @@ class Game
     puts "Play again? (Y/N)"
     answer = gets.to_s.upcase.chomp
     if ((answer == "Y" || answer == "YES"))
-      reset()
+    reset()
     game_turn()
     else      
       puts "Thanks for playing!"
@@ -151,8 +153,7 @@ class Game
     p @board[3..5]
     p @board[6..8]
     game_turn()
-    # the end game will give the option to relaunch another round and clear the board, and toggle gameover back to false.
-    replay()
+
   end
  
 end
