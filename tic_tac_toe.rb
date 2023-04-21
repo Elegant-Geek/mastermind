@@ -84,10 +84,10 @@ class Game
   def game_turn
     loop do
 
-    puts "Starting new round with:"
+    puts "Starting new round:"
     @players.each do |p|
     loop do
-      puts "#{p.name} playing as #{p.character}!"
+      # puts "#{p.name} playing as #{p.character}!"
       puts "Player #{p.name} (#{p.character}), pick a position on the board using 1-9."
       selection = gets.chomp.to_i
       # add the user's selection to x or o combo array (each player has their own combo array.)
@@ -96,14 +96,15 @@ class Game
       p.combo_array
 
       # if valid selection and the space is blank on the board,
-      if (selection.between?(1, 9) && @board[selection + 1].nil?)
+      if (selection.between?(1, 9) && @board[selection - 1].nil?)
       @board[selection - 1] = p.character
       p.combo_array << selection
       # delete duplicate entries
       p.combo_array = p.combo_array.uniq
+      p p.combo_array
       p @board
       break
-      elsif !@board[selection + 1].nil?
+      elsif !@board[selection - 1].nil?
         puts "Spot already taken."
       else
       # else the loop repeats til a valid character is entered
@@ -114,13 +115,22 @@ class Game
       # ^ loop small end
 
             # sort the combo array then match it to any winning combo
-            if !WINNING_COMBOS.include?(p.combo_array.sort)
+            # if there is no match and there are still nils, repeat loop
+            if (!WINNING_COMBOS.include?(p.combo_array.sort)) && @board.include?(nil)
               puts "here we go again!"
-              end
+            # if there are no winners and the board is full, END GAME
+            elsif (!WINNING_COMBOS.include?(p.combo_array.sort)) && !@board.include?(nil)
+              puts "CATS! end game."
+              break
+            # if any match is found, winner is declared based on the character thing with the matching combo (just state the player who wins) END GAME
+            elsif (WINNING_COMBOS.include?(p.combo_array.sort))
+              puts "PLAYER #{p.name} (#{p.character}), WINS THE GAME!"
+              break
+            else
+              puts "Something is wrong."
+            end
       end
       # ^ each do end
-
-
 
     end
     #^^ bigger loop end
