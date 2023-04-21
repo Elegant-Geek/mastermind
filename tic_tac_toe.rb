@@ -4,17 +4,6 @@
 # refined conditionalls for nil / blank names
 # first github / git commmit at 1:55AM
 
-module Setup
-  def welcome()
-    puts "Welcome to Tic-Tac Toe!"
-  end
-  def goodbye()
-    puts "Thanks for playing!"
-  end
-
-end
-
-
 class Game
   attr_reader :board, :players
   # create a list of winning combos in the array
@@ -28,14 +17,21 @@ class Game
     [3, 5, 7],
     [1, 5, 9]
   ]
-  include Setup
   def initialize(game_name = "Tic Tac Toe")
-
+    @gameover = false
     # create an array with 9 empty spaces! (before it was just @board = [] and I might revert back to that)
     @board = Array.new(9, nil)
     # p @board
     @players = []
     puts "New game called '#{game_name}' created."
+  end
+  def reset()
+        # reset gameover back to false so that a new gameturn can start
+        @gameover = false
+        @board = Array.new(9, nil)
+        @players.each do |p|
+          p.combo_array = []
+        end
   end
   def set_player_names
     2.times do |i|
@@ -82,7 +78,7 @@ class Game
     ###########
   end
   def game_turn
-    loop do
+    while @gameover == false do
 
     puts "Starting new round:"
     @players.each do |p|
@@ -92,15 +88,14 @@ class Game
       selection = gets.chomp.to_i
       # add the user's selection to x or o combo array (each player has their own combo array.)
       
-
       p.combo_array
 
       # if valid selection and the space is blank on the board,
       if (selection.between?(1, 9) && @board[selection - 1].nil?)
       @board[selection - 1] = p.character
       p.combo_array << selection
-      # delete duplicate entries
-      p.combo_array = p.combo_array.uniq
+      # sort the combo array, delete duplicate entries, then overwrite it!
+      p.combo_array = p.combo_array.sort.uniq
       p p.combo_array
       p @board
       break
@@ -113,45 +108,48 @@ class Game
       #^ cond end
       end
       # ^ loop small end
-
             # sort the combo array then match it to any winning combo
             # if there is no match and there are still nils, repeat loop
-            if (!WINNING_COMBOS.include?(p.combo_array.sort)) && @board.include?(nil)
+            if (!WINNING_COMBOS.include?(p.combo_array)) && @board.include?(nil)
               puts "here we go again!"
-            # if there are no winners and the board is full, END GAME
-            elsif (!WINNING_COMBOS.include?(p.combo_array.sort)) && !@board.include?(nil)
+            # if there are no winners and the board is full, END GAME by setting toggle to true
+            elsif (!WINNING_COMBOS.include?(p.combo_array)) && !@board.include?(nil)
               puts "CATS! end game."
+              @gameover = true
               break
-            # if any match is found, winner is declared based on the character thing with the matching combo (just state the player who wins) END GAME
-            elsif (WINNING_COMBOS.include?(p.combo_array.sort))
-              puts "PLAYER #{p.name} (#{p.character}), WINS THE GAME!"
+            # if any match is found, winner is declared based on the character thing with the matching combo (just state the player who wins) END GAME by setting toggle to true
+            elsif (WINNING_COMBOS.include?(p.combo_array))
+              puts "PLAYER #{p.name} (#{p.character}), WINS THE GAME WITH POSITIONS #{p.combo_array}!"
+              @gameover = true
               break
             else
               puts "Something is wrong."
             end
       end
       # ^ each do end
-
     end
     #^^ bigger loop end
-
-    puts "there mustve been a winner / match.."
-    @players.each do |p|
-    puts "#{p.combo_array}???"
-    end
-
+    puts "GAME OVER."
   end
   # ^ gameturn end
 
+  def replay()
+    puts "Play again? (Y/N)"
+    answer = gets.to_s.upcase.chomp
+    if ((answer == "Y" || answer == "YES"))
+      reset()
+    game_turn()
+    else      
+      puts "Thanks for playing!"
+    end
+  end
 
-
-
- 
   def play_game()
-    welcome()
+    puts "Welcome to Tic-Tac Toe!"
     set_player_names()
     game_turn()
-    # end_game()
+    # the end game will give the option to relaunch another round and clear the board, and toggle gameover back to false.
+    replay()
   end
  
 end
@@ -175,5 +173,5 @@ end
 # create defaults (comment these out these are test players)
 Player.new("Player 1", "X")
 Player.new("Player 2", "O")
-o = Game.new("hi")
+o = Game.new()
 o.play_game()
