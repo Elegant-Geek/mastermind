@@ -17,7 +17,7 @@ class Game
     [3, 5, 7],
     [1, 5, 9]
   ]
-  def initialize(game_name = "Tic Tac Toe")
+  def initialize(game_name = "Tic-Tac-Toe")
     @gameover = false
     # create an array with 9 empty spaces! (before it was just @board = [] and I might revert back to that)
     @board = Array.new(9, nil)
@@ -64,9 +64,8 @@ class Game
           end
         end
     end
-        ##########
         #you can comment out the display line below
-        p @players
+        # p @players
         if @players.size > 2
           p @players
           puts "Array too big (2 needed). The most recent entries have overwritten previous player data."
@@ -75,7 +74,6 @@ class Game
           @players = @players.slice(-2, @players.length)
           p @players
         end
-    ###########
   end
   def game_turn
     while @gameover == false do
@@ -97,7 +95,9 @@ class Game
       # sort the combo array, delete duplicate entries, then overwrite it!
       p.combo_array = p.combo_array.sort.uniq
       p p.combo_array
-      p @board
+      p @board[0..2]
+      p @board[3..5]
+      p @board[6..8]
       break
       elsif !@board[selection - 1].nil?
         puts "Spot already taken."
@@ -111,7 +111,7 @@ class Game
             # sort the combo array then match it to any winning combo
             # if there is no match and there are still nils, repeat loop
             if (!WINNING_COMBOS.include?(p.combo_array)) && @board.include?(nil)
-              puts "here we go again!"
+              # puts "here we go again!"
             # if there are no winners and the board is full, END GAME by setting toggle to true
             elsif (!WINNING_COMBOS.include?(p.combo_array)) && !@board.include?(nil)
               puts "CATS! end game."
@@ -145,8 +145,11 @@ class Game
   end
 
   def play_game()
-    puts "Welcome to Tic-Tac Toe!"
+    puts "Welcome to Tic-Tac-Toe!"
     set_player_names()
+    p @board[0..2]
+    p @board[3..5]
+    p @board[6..8]
     game_turn()
     # the end game will give the option to relaunch another round and clear the board, and toggle gameover back to false.
     replay()
