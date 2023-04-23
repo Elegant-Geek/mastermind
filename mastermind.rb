@@ -16,12 +16,13 @@ class Game
       # (It's curerntly hidden bc no reader/writer is given for it!)
       @code = []
       @round_guesses = []
+      @round_guesses_with_feedback = []
       @guess_array = []
   end
 
   def initialize(game_name = "Mastermind")
     reset()
-    puts "New game called '#{game_name}' created."
+    # puts "New game called '#{game_name}' created."
   end
 
   def number_of_guesses_setup()
@@ -44,10 +45,10 @@ class Game
     4.times do 
       @code << COLORS[rand(0..4)]
     end
-    puts "The computer has generated a color combo (4 slots and colors of #{COLORS})."
-    # comment out the two lines below (DO NOT PRINT THE SECRET CODE)
-    puts "The computer generated code is..."
-    p @code
+    puts "Guess the 4 slot combination of these colors: #{COLORS})."
+    # # comment out the two lines below (DO NOT PRINT THE SECRET CODE)
+    # puts "The computer generated code is..."
+    # p @code
   end
 
   def game_turns()
@@ -103,14 +104,15 @@ class Game
     @round_guesses_with_feedback = []
     @round_guesses.each_with_index do |color, index|
       if color == @code[index]
-        puts "#{color} in correct spot! (Correct)"
-        @round_guesses_with_feedback << "#{color} (Correct)"
+        # puts "#{color} in correct spot! (Correct)"
+        @round_guesses_with_feedback << "#{color} (YES)"
         # color.concat(" (correct)") 
       elsif @code.include?(color)
-        puts"#{color} exists, but in wrong spot.(Close)"
-        @round_guesses_with_feedback << "#{color} (Close)"
+        # puts"#{color} exists, but in wrong spot.(Close)"
+        @round_guesses_with_feedback << "#{color} (WS)"
         # color.concat(" (WS)") 
-      else puts "#{color} not in the code. (X)" 
+      else 
+        # puts "#{color} not in the code. (X)" 
         @round_guesses_with_feedback << "#{color} (X)"
         # color.concat(" (X)") 
       end
