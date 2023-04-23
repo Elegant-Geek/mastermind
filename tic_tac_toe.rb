@@ -94,9 +94,11 @@ class Game
       # sort the combo array, delete duplicate entries, then overwrite it!
       p.combo_array = p.combo_array.sort.uniq
       p p.combo_array
-      p @board[0..2]
-      p @board[3..5]
-      p @board[6..8]
+      # this line (below) must be here so that the board display gets updated every time the board changes
+      @board_display = @board.map(&:to_s)
+      p @board_display[0..2]
+      p @board_display[3..5]
+      p @board_display[6..8]
       break
       elsif !@board[selection - 1].is_a? Numeric
         puts "Spot already taken."
