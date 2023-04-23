@@ -86,11 +86,13 @@ class Game
     loop do
       # puts "#{p.name} playing as #{p.character}!"
       puts "Player #{p.name} (#{p.character}), pick a position on the board (1-9)."
-      selection = gets.chomp.to_i
+      # the 0-8 below grabs the first 8 characters of the input so that any big numbers wont be registered! COOL!
+      selection = gets.chomp[0,8].to_i
+      # puts selection
       # add the user's selection to x or o combo array (each player has their own combo array.)
       p.combo_array
-      # if valid selection and the space is blank on the board,
-      if (selection.between?(1, 9)) && (@board[selection - 1].is_a? Numeric)
+      # if valid selection of a numeric type, and between 1-9, and the space is blank on the board (aka 1-9 is displayed), do the work.
+      if (selection.is_a? Numeric) && (selection.between?(1, 9)) && (@board[selection - 1].is_a? Numeric)
       @board[selection - 1] = p.character
       p.combo_array << selection
       # sort the combo array, delete duplicate entries, then overwrite it!
@@ -102,8 +104,10 @@ class Game
       p @board_display[3..5]
       p @board_display[6..8]
       break
+      elsif !(selection.is_a? Numeric)
+        puts "Type a number 1-9..." 
       # If spot taken by x or o aka a non-numerical datatype, print this message.
-      elsif (!@board[selection - 1].is_a? Numeric) && (selection <= 9)
+      elsif (selection <= 9) && (!@board[selection - 1].is_a? Numeric)
       puts "Spot already taken."
       elsif !@board[selection - 1].nil? || selection > 9
       puts "TYPE 1-9 YOU MANIAC."
@@ -192,3 +196,4 @@ o = Game.new()
 o.play_game()
 
 # test a game with values of (1 2 3 4 5 7 6 8 9) consecutively and also try 159 for a winning combo and 1579 for the filtering system. 
+# make sure a cats game works
