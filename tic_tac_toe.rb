@@ -76,32 +76,32 @@ class Game
   end
   def game_turn
     while @gameover == false do
-
     puts "Starting new round:"
     @players.each do |p|
     loop do
       # puts "#{p.name} playing as #{p.character}!"
-      puts "Player #{p.name} (#{p.character}), pick a position on the board using 1-9."
+      puts "Player #{p.name} (#{p.character}), pick a position on the board (1-9)."
       selection = gets.chomp.to_i
       # add the user's selection to x or o combo array (each player has their own combo array.)
-      
       p.combo_array
-
       # if valid selection and the space is blank on the board,
       if (selection.between?(1, 9)) && (@board[selection - 1].is_a? Numeric)
       @board[selection - 1] = p.character
       p.combo_array << selection
       # sort the combo array, delete duplicate entries, then overwrite it!
       p.combo_array = p.combo_array.sort.uniq
-      p p.combo_array
-      # this line (below) must be here so that the board display gets updated every time the board changes
+      # p p.combo_array
+      # this line (below) must be here so that the board display gets updated every time the board changes. The map to_s includes quotes so board maintains shape throughout the game.
       @board_display = @board.map(&:to_s)
       p @board_display[0..2]
       p @board_display[3..5]
       p @board_display[6..8]
       break
-      elsif !@board[selection - 1].is_a? Numeric
-        puts "Spot already taken."
+      # If spot taken by x or o aka a non-numerical datatype, print this message.
+      elsif (!@board[selection - 1].is_a? Numeric) && (selection <= 9)
+      puts "Spot already taken."
+      elsif !@board[selection - 1].nil? || selection > 9
+      puts "TYPE 1-9 YOU MANIAC."
       else
       # else the loop repeats til a valid character is entered
       "Type a number 1-9." 
@@ -109,53 +109,33 @@ class Game
       #^ cond end
       end
       # ^ loop small end
-
+            # match combo array to any winning combo using iteration through every winning combo
             WINNING_COMBOS.each do |n|
-              # p n
-              # match combo array to any winning combo using iteration through every winning combo
-             
+              # the "and" sign catches the intersecting values of each instance of the winning combos constant and matches it to the current player's combo array.
               @intersection = n & p.combo_array
-              p.combo_array
-              p n 
-              p @intersection
-              if !(@intersection == n) && @board.any?(1..9)
-                #repeat loop
-                puts "onto check next winning combo..."
-              elsif !(@intersection == n) && !@board.any?(1..9)
-                puts "CATS! end game."
-                @gameover = true
-                break
-              elsif @intersection == n
-                # end the iteration if a match is found
+              # p.combo_array
+              # p @intersection
+              # if any winner at all, then report winner and break game. It doesn't matter if board is full or not. The board is checked for fullness later on.
+              if  @intersection == n
                 puts "PLAYER #{p.name} (#{p.character}), WINS THE GAME WITH POSITIONS #{@intersection}!"
                 @gameover = true
                 break
-              else
-                # puts "something is wrong"
               end
             end
+            #^ end winning constant each do combo loop
+
             # now exit out of main loop if game over is true (because it is currently nested in the each do loop above but not outside of it.)
             if @gameover == true
-              puts "ending outer loop!"
+            break
+            # now cats can be declared if board is full but the loop never broke and declared a winner as shown above!
+            # cats must be checked outside of the main loop using gameover variable set to true condition because otherwise, cats will be returned on first
+            # iteration if match not found but board full, so this cats must be defined based on conditions outside the each do loop! COOL!
+            # if cats aka no game end and the board is full, break loop but dont 
+            elsif @gameover == false && !@board.any?(1..9)
+            puts "CATS! end game."
+            @gameover = true
             break
             end
-      
-            # # if there is no match and there are still numbers on the board, repeat loop
-            # if (!WINNING_COMBOS.include?(p.combo_array)) && @board.any?(1..9)
-            #   # puts "here we go again!"
-            # # if there are no winners and the board is full, END GAME by setting toggle to true
-            # elsif (!WINNING_COMBOS.include?(p.combo_array)) && !@board.any?(1..9)
-            #   puts "CATS! end game."
-            #   @gameover = true
-            #   break
-            # # if any match is found, winner is declared based on the character thing with the matching combo (just state the player who wins) END GAME by setting toggle to true
-            # elsif (WINNING_COMBOS.include?(p.combo_array))
-            #   puts "PLAYER #{p.name} (#{p.character}), WINS THE GAME WITH POSITIONS #{p.combo_array}!"
-            #   @gameover = true
-            #   break
-            # else
-            #   puts "Something is wrong."
-            # end
       end
       # ^ players each do end
     end
@@ -184,9 +164,7 @@ class Game
     p Array (4..6)
     p Array (7..9)
     game_turn()
-
   end
- 
 end
 
 class Player
@@ -200,8 +178,6 @@ class Player
     @combo_array = []
     #append player details to the main array of players. Each player is their own array. Maybe change this to be a hash...
   end
-
-
 end
 
 #driver code
@@ -210,3 +186,5 @@ Player.new("Player 1", "X")
 Player.new("Player 2", "O")
 o = Game.new()
 o.play_game()
+
+# test a game with values of (1 2 3 4 5 7 6 8 9) consecutively and also try 159 for a winning combo and 1579 for the filtering system. 
