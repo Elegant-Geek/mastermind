@@ -19,16 +19,14 @@ class Game
     [1, 5, 9]
   ]
   def initialize(game_name = "Tic-Tac-Toe")
-    @gameover = false
-    # create an array with 9 empty spaces! (before it was just @board = [] and I might revert back to that)
-    @board =*(1..9)
-    # p @board
     @players = []
+    reset()
     puts "New game called '#{game_name}' created."
   end
   def reset()
         # reset gameover back to false so that a new gameturn can start
         @gameover = false
+        # create an array with 9 empty spaces! (before it was just @board = [] and I might revert back to that)
         @board =*(1..9)
         @players.each do |p|
           p.combo_array = []
@@ -110,7 +108,7 @@ class Game
       end
       # ^ loop small end
             # sort the combo array then match it to any winning combo
-            # if there is no match and there are still nils, repeat loop
+            # if there is no match and there are still numbers on the board, repeat loop
             if (!WINNING_COMBOS.include?(p.combo_array)) && @board.any?(1..9)
               # puts "here we go again!"
             # if there are no winners and the board is full, END GAME by setting toggle to true
