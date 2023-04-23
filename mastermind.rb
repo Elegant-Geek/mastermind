@@ -1,6 +1,8 @@
 #3:39 - 3:51pm create random code generator
 # 3:51 - 4:15pm add basic custom set number of guesses!
 # 4:22 - 4:33pm add basic game round loop construct
+# 4:33 - 4:52pm add basic you win match, the end of game / replay / reset functions!
+# 4:52 - 5:03 match all shorthand inputs to the array
 
 #after each guess add one to the counter
 class Game
@@ -61,6 +63,13 @@ class Game
           loop do
             puts "Enter slot #{n + 1} color guess:"
             @ans = gets.chomp.capitalize
+            ["R", "Y", "G", "B", "P"].each_with_index do |letter, index|
+              if @ans == letter
+                # match the R Y G B P index to the index of COLORS constant so that R input gets reassigned to "Red" etc
+                @ans = COLORS[index]
+              end
+            end
+            
             if !(COLORS.include?(@ans))
               puts "Invalid guess: Pick one of these colors: #{COLORS}."
             elsif (COLORS.include?(@ans))
@@ -79,7 +88,7 @@ class Game
     @guess_array << @round_guesses
     ##############
     # the code below will deliver feedback on how well your guesses matched the computer's code before starting a new round!!!
-    if @round_guesses = @code
+    if @round_guesses == @code
       puts "YOU WIN THE GAME! The code was: #{@code}."
       # exit the @guessamount times do |n| loop and the function continues to the bottom then ends.
       break
