@@ -1,20 +1,23 @@
 #3:39 - 3:51pm create random code generator
 # 3:51 - 4:15pm add basic custom set number of guesses!
-# 4:22 - 
+# 4:22 - 4:33pm add basic game round loop construct
 
 #after each guess add one to the counter
 class Game
-  attr_reader :board, :players
   # create a list of possible colors
   COLORS = ["Red", "Yellow", "Green", "Blue", "Purple"]
 
+  def reset()
+      # NOTE: make sure CODE instance variable below cannot be called from the console because this reveals the answer to the game! 
+      # (It's curerntly hidden bc no reader/writer is given for it!)
+      @code = []
+      # reset()
+      @round_guesses = []
+      @guess_array = []
+  end
+
   def initialize(game_name = "Mastermind")
-    @players = []
-    # NOTE: make sure CODE instance variable below cannot be called from the console because this reveals the answer to the game! 
-    # (It's curerntly hidden bc no reader/writer is given for it!)
-    @code = []
-    # reset()
-    @guess_array = []
+    reset()
     puts "New game called '#{game_name}' created."
   end
 
@@ -49,6 +52,8 @@ class Game
     # (i could do a preferences option using gets.chomp.to_i to grab a number of guesses from the user (set a range like +/- 4 guesses: 8-16 guesses!))
     # then pass that variable in here instead of 12. The ^^ user pref variable is stored in setup btw.
     @guess_amount.times do |n|
+      # clear the bucket that stores the last round's four guesses!
+      @round_guesses = []
         # testing the guess amount! this will loop the exact amount of n times the user specifies ad then will exit the loop once n times have been reached.
         puts "Round #{n + 1}:"
         puts "Current guesses go in this big printed array: #{@guess_array}"
@@ -60,7 +65,8 @@ class Game
               puts "Invalid guess: Pick one of these colors: #{COLORS}."
             elsif (COLORS.include?(@ans))
                   # once valid entry,
-            puts "worksssssss"
+            @round_guesses << @ans
+            p @round_guesses
             break
         else
           puts "something is wrong."
@@ -69,10 +75,36 @@ class Game
       # ^ loop end
     end
     # ^ guess amount times |n| loop end
+    #after the round, dump the four guesses into big guess array for feedback
+    @guess_array << @round_guesses
+    ##############
+    # the code below will deliver feedback on how well your guesses matched the computer's code before starting a new round!!!
+    if @round_guesses = @code
+      puts "YOU WIN THE GAME! The code was: #{@code}."
+      # exit the @guessamount times do |n| loop and the function continues to the bottom then ends.
+      break
+    end
+
+        # replay()
 
 
+    ############
 
 
+    end
+    #^guessamount times end, replay is launched
+    # the end game will give the option to relaunch another round and clear the guesses.
+    replay()
+  end
+
+  def replay()
+    puts "Play again? (Y/N)"
+    answer = gets.to_s.upcase.chomp
+    if ((answer == "Y" || answer == "YES"))
+    reset()
+    play_game()
+    else      
+      puts "Thanks for playing!"
     end
   end
 
