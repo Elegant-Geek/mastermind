@@ -4,6 +4,7 @@
 # refined conditionalls for nil / blank names
 # first github / git commmit at 1:55AM
 # finish rough draft (still buggy with what counts as a win) as of 4:51AM OOPS
+# 11:15-3:15 (4 hours) cleaned up cmd line output, improved conditional statement logic, and wrote the code to match / catch the winning amounts to the player combo array!
 
 class Game
   attr_reader :board, :players
