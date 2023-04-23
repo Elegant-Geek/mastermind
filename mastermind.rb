@@ -4,7 +4,7 @@
 # 4:33 - 4:52pm add basic you win match, the end of game / replay / reset functions!
 # 4:52 - 5:03 match all shorthand inputs to the array
 # 5:03 - 5:20 BREAK TIME
-# 5:20 - 
+# 5:20 - 6:32 finish up the conditional that helps give the user feedback on YES, wrong spot,or no
 
 #after each guess add one to the counter
 class Game
@@ -46,6 +46,7 @@ class Game
       @code << COLORS[rand(0..4)]
     end
     puts "Guess the 4 slot combination of these colors: #{COLORS})."
+    puts "Feedback of 'YES' (correct color and placement), 'WP' (wrong placement), 'X' (color absent) will be given each round."
     # # comment out the two lines below (DO NOT PRINT THE SECRET CODE)
     # puts "The computer generated code is..."
     # p @code
@@ -109,8 +110,8 @@ class Game
         # color.concat(" (correct)") 
       elsif @code.include?(color)
         # puts"#{color} exists, but in wrong spot.(Close)"
-        @round_guesses_with_feedback << "#{color} (WS)"
-        # color.concat(" (WS)") 
+        @round_guesses_with_feedback << "#{color} (WP)"
+        # color.concat(" (WP)") 
       else 
         # puts "#{color} not in the code. (X)" 
         @round_guesses_with_feedback << "#{color} (X)"
