@@ -32,6 +32,11 @@ class Game
           p.combo_array = []
         end
   end
+  def print_default_array()
+    p Array (1..3)
+    p Array (4..6)
+    p Array (7..9)
+  end
   def set_player_names
     2.times do |i|
       loop do
@@ -151,6 +156,7 @@ class Game
     answer = gets.to_s.upcase.chomp
     if ((answer == "Y" || answer == "YES"))
     reset()
+    print_default_array()
     game_turn()
     else      
       puts "Thanks for playing!"
@@ -160,9 +166,7 @@ class Game
   def play_game()
     puts "Welcome to Tic-Tac-Toe!"
     set_player_names()
-    p Array (1..3)
-    p Array (4..6)
-    p Array (7..9)
+    print_default_array()
     game_turn()
   end
 end
