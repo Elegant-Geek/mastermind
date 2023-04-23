@@ -3,6 +3,7 @@
 # finished storing names as players with default characters. 12:58AM
 # refined conditionalls for nil / blank names
 # first github / git commmit at 1:55AM
+# finish rough draft (still buggy with what counts as a win) as of 4:51AM OOPS
 
 class Game
   attr_reader :board, :players
@@ -20,7 +21,7 @@ class Game
   def initialize(game_name = "Tic-Tac-Toe")
     @gameover = false
     # create an array with 9 empty spaces! (before it was just @board = [] and I might revert back to that)
-    @board = Array.new(9, nil)
+    @board =*(1..9)
     # p @board
     @players = []
     puts "New game called '#{game_name}' created."
@@ -28,7 +29,7 @@ class Game
   def reset()
         # reset gameover back to false so that a new gameturn can start
         @gameover = false
-        @board = Array.new(9, nil)
+        @board =*(1..9)
         @players.each do |p|
           p.combo_array = []
         end
@@ -89,7 +90,7 @@ class Game
       p.combo_array
 
       # if valid selection and the space is blank on the board,
-      if (selection.between?(1, 9) && @board[selection - 1].nil?)
+      if (selection.between?(1, 9)) && (@board[selection - 1].is_a? Numeric)
       @board[selection - 1] = p.character
       p.combo_array << selection
       # sort the combo array, delete duplicate entries, then overwrite it!
@@ -99,7 +100,7 @@ class Game
       p @board[3..5]
       p @board[6..8]
       break
-      elsif !@board[selection - 1].nil?
+      elsif !@board[selection - 1].is_a? Numeric
         puts "Spot already taken."
       else
       # else the loop repeats til a valid character is entered
@@ -110,10 +111,10 @@ class Game
       # ^ loop small end
             # sort the combo array then match it to any winning combo
             # if there is no match and there are still nils, repeat loop
-            if (!WINNING_COMBOS.include?(p.combo_array)) && @board.include?(nil)
+            if (!WINNING_COMBOS.include?(p.combo_array)) && @board.any?(1..9)
               # puts "here we go again!"
             # if there are no winners and the board is full, END GAME by setting toggle to true
-            elsif (!WINNING_COMBOS.include?(p.combo_array)) && !@board.include?(nil)
+            elsif (!WINNING_COMBOS.include?(p.combo_array)) && !@board.any?(1..9)
               puts "CATS! end game."
               @gameover = true
               break
@@ -149,9 +150,9 @@ class Game
   def play_game()
     puts "Welcome to Tic-Tac-Toe!"
     set_player_names()
-    p @board[0..2]
-    p @board[3..5]
-    p @board[6..8]
+    p Array (1..3)
+    p Array (4..6)
+    p Array (7..9)
     game_turn()
 
   end
