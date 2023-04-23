@@ -109,25 +109,55 @@ class Game
       #^ cond end
       end
       # ^ loop small end
-            # sort the combo array then match it to any winning combo
-            # if there is no match and there are still numbers on the board, repeat loop
-            if (!WINNING_COMBOS.include?(p.combo_array)) && @board.any?(1..9)
-              # puts "here we go again!"
-            # if there are no winners and the board is full, END GAME by setting toggle to true
-            elsif (!WINNING_COMBOS.include?(p.combo_array)) && !@board.any?(1..9)
-              puts "CATS! end game."
-              @gameover = true
-              break
-            # if any match is found, winner is declared based on the character thing with the matching combo (just state the player who wins) END GAME by setting toggle to true
-            elsif (WINNING_COMBOS.include?(p.combo_array))
-              puts "PLAYER #{p.name} (#{p.character}), WINS THE GAME WITH POSITIONS #{p.combo_array}!"
-              @gameover = true
-              break
-            else
-              puts "Something is wrong."
+
+            WINNING_COMBOS.each do |n|
+              # p n
+              # match combo array to any winning combo using iteration through every winning combo
+             
+              @intersection = n & p.combo_array
+              p.combo_array
+              p n 
+              p @intersection
+              if !(@intersection == n) && @board.any?(1..9)
+                #repeat loop
+                puts "onto check next winning combo..."
+              elsif !(@intersection == n) && !@board.any?(1..9)
+                puts "CATS! end game."
+                @gameover = true
+                break
+              elsif @intersection == n
+                # end the iteration if a match is found
+                puts "PLAYER #{p.name} (#{p.character}), WINS THE GAME WITH POSITIONS #{@intersection}!"
+                @gameover = true
+                break
+              else
+                # puts "something is wrong"
+              end
             end
+            # now exit out of main loop if game over is true (because it is currently nested in the each do loop above but not outside of it.)
+            if @gameover == true
+              puts "ending outer loop!"
+            break
+            end
+      
+            # # if there is no match and there are still numbers on the board, repeat loop
+            # if (!WINNING_COMBOS.include?(p.combo_array)) && @board.any?(1..9)
+            #   # puts "here we go again!"
+            # # if there are no winners and the board is full, END GAME by setting toggle to true
+            # elsif (!WINNING_COMBOS.include?(p.combo_array)) && !@board.any?(1..9)
+            #   puts "CATS! end game."
+            #   @gameover = true
+            #   break
+            # # if any match is found, winner is declared based on the character thing with the matching combo (just state the player who wins) END GAME by setting toggle to true
+            # elsif (WINNING_COMBOS.include?(p.combo_array))
+            #   puts "PLAYER #{p.name} (#{p.character}), WINS THE GAME WITH POSITIONS #{p.combo_array}!"
+            #   @gameover = true
+            #   break
+            # else
+            #   puts "Something is wrong."
+            # end
       end
-      # ^ each do end
+      # ^ players each do end
     end
     #^^ bigger loop end
     puts "GAME OVER."
