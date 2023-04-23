@@ -14,6 +14,7 @@ class Game
   def reset()
       # NOTE: make sure CODE instance variable below cannot be called from the console because this reveals the answer to the game! 
       # (It's curerntly hidden bc no reader/writer is given for it!)
+      @game_over = false
       @code = []
       @round_guesses = []
       @round_guesses_with_feedback = []
@@ -27,11 +28,11 @@ class Game
 
   def number_of_guesses_setup()
     loop do
-      puts "How many guesses do you want? (8-16 allowed)"
+      puts "How many guesses do you want? (5-10 allowed)"
       @guess_amount = gets.chomp.to_i
-      if !(@guess_amount.between?(8, 16))
-        puts "Invalid answer: A range of 8-16 guesses is allowed."
-      elsif (@guess_amount.between?(8, 16))
+      if !(@guess_amount.between?(5, 10))
+        puts "Invalid answer: A range of 5-10 guesses is allowed."
+      elsif (@guess_amount.between?(5, 10))
             # once valid entry,
       puts "Ok, you have #{@guess_amount} guesses. Good luck!"
       break
@@ -54,7 +55,7 @@ class Game
 
   def game_turns()
     # the guesses is hard coded to be 12 
-    # (i could do a preferences option using gets.chomp.to_i to grab a number of guesses from the user (set a range like +/- 4 guesses: 8-16 guesses!))
+    # (i could do a preferences option using gets.chomp.to_i to grab a number of guesses from the user (set a range of guesses: 5-10 guesses!))
     # then pass that variable in here instead of 12. The ^^ user pref variable is stored in setup btw.
     @guess_amount.times do |n|
       # clear the bucket that stores the last round's four guesses!
@@ -99,6 +100,7 @@ class Game
     # the code below will deliver feedback on how well your guesses matched the computer's code before starting a new round!!!
     if @round_guesses == @code
       puts "YOU WIN THE GAME! The code was: #{@code}."
+      @game_over = true
       # exit the @guessamount times do |n| loop and the function continues to the bottom then ends.
       break
     end
@@ -125,7 +127,11 @@ class Game
 
 
     end
-    #^guessamount times end, replay is launched
+    #^guessamount times end, replay is launched.
+    # if person doesnt get the game over toggle to true by the end of the round loops, they lose the game and the code is revealed.
+    if @game_over == false
+      puts "GAME OVER. The code was: #{@code}."
+    end
     # the end game will give the option to relaunch another round and clear the guesses.
     replay()
   end
