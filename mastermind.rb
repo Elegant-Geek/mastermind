@@ -5,6 +5,7 @@
 # 4:52 - 5:03 match all shorthand inputs to the array
 # 5:03 - 5:20 BREAK TIME
 # 5:20 - 6:32 finish up the conditional that helps give the user feedback on YES, wrong spot,or no
+# FINISHED at 6:49 PM BABY end of TOP day 10 with entire mastermind project (very basic version lol not the computer or you create code option yet)
 
 #after each guess add one to the counter
 class Game
