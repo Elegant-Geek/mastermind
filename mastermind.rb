@@ -3,6 +3,8 @@
 # 4:22 - 4:33pm add basic game round loop construct
 # 4:33 - 4:52pm add basic you win match, the end of game / replay / reset functions!
 # 4:52 - 5:03 match all shorthand inputs to the array
+# 5:03 - 5:20 BREAK TIME
+# 5:20 - 
 
 #after each guess add one to the counter
 class Game
@@ -13,7 +15,6 @@ class Game
       # NOTE: make sure CODE instance variable below cannot be called from the console because this reveals the answer to the game! 
       # (It's curerntly hidden bc no reader/writer is given for it!)
       @code = []
-      # reset()
       @round_guesses = []
       @guess_array = []
   end
@@ -56,9 +57,13 @@ class Game
     @guess_amount.times do |n|
       # clear the bucket that stores the last round's four guesses!
       @round_guesses = []
+      p @round_guesses
         # testing the guess amount! this will loop the exact amount of n times the user specifies ad then will exit the loop once n times have been reached.
         puts "Round #{n + 1}:"
-        puts "Current guesses go in this big printed array: #{@guess_array}"
+        @guess_array.each do |line|
+          p line
+        end
+        # puts "Current guesses go in this big printed array: #{@guess_array}"
         4.times do |n|
           loop do
             puts "Enter slot #{n + 1} color guess:"
@@ -75,7 +80,7 @@ class Game
             elsif (COLORS.include?(@ans))
                   # once valid entry,
             @round_guesses << @ans
-            p @round_guesses
+            # p @round_guesses
             break
         else
           puts "something is wrong."
@@ -84,18 +89,34 @@ class Game
       # ^ loop end
     end
     # ^ guess amount times |n| loop end
-    #after the round, dump the four guesses into big guess array for feedback
-    @guess_array << @round_guesses
+
+    #after the round, dump the four guesses into big guess array for feedback:
+    p @round_guesses
+
     ##############
+
     # the code below will deliver feedback on how well your guesses matched the computer's code before starting a new round!!!
     if @round_guesses == @code
       puts "YOU WIN THE GAME! The code was: #{@code}."
       # exit the @guessamount times do |n| loop and the function continues to the bottom then ends.
       break
     end
+    # puts "HEEEEEEEEEEE"
+    @round_guesses.each_with_index do |color, index|
+      p color
 
-        # replay()
-
+      if color == @code[index]
+        puts "#{color} in correct spot! (Correct)"
+        # color.concat(" (correct)") 
+      elsif @code.include?(color)
+        puts"#{color} exists, but in wrong spot.(Close)"
+        # color.concat(" (WS)") 
+      else puts "#{color} not in the code. (X)" 
+        # color.concat(" (X)") 
+      end
+    end
+    # update array with feedback before adding to big one
+    @guess_array << @round_guesses
 
     ############
 
