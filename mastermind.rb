@@ -57,7 +57,6 @@ class Game
     @guess_amount.times do |n|
       # clear the bucket that stores the last round's four guesses!
       @round_guesses = []
-      p @round_guesses
         # testing the guess amount! this will loop the exact amount of n times the user specifies ad then will exit the loop once n times have been reached.
         puts "Round #{n + 1}:"
         @guess_array.each do |line|
@@ -101,22 +100,23 @@ class Game
       # exit the @guessamount times do |n| loop and the function continues to the bottom then ends.
       break
     end
-    # puts "HEEEEEEEEEEE"
+    @round_guesses_with_feedback = []
     @round_guesses.each_with_index do |color, index|
-      p color
-
       if color == @code[index]
         puts "#{color} in correct spot! (Correct)"
+        @round_guesses_with_feedback << "#{color} (Correct)"
         # color.concat(" (correct)") 
       elsif @code.include?(color)
         puts"#{color} exists, but in wrong spot.(Close)"
+        @round_guesses_with_feedback << "#{color} (Close)"
         # color.concat(" (WS)") 
       else puts "#{color} not in the code. (X)" 
+        @round_guesses_with_feedback << "#{color} (X)"
         # color.concat(" (X)") 
       end
     end
     # update array with feedback before adding to big one
-    @guess_array << @round_guesses
+    @guess_array << @round_guesses_with_feedback
 
     ############
 
