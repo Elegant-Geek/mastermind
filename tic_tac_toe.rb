@@ -191,8 +191,8 @@ end
 
 #driver code
 # create defaults (comment these out these are test players)
-Player.new("Player 1", "X")
-Player.new("Player 2", "O")
+# Player.new("Player 1", "X")
+# Player.new("Player 2", "O")
 o = Game.new()
 o.play_game()
 
