@@ -1,4 +1,5 @@
 #3:39 - 3:51pm create random code generator
+# 3:51-4:15 add basic custom set number of guesses!
 
 #after each guess add one to the counter
 class Game
